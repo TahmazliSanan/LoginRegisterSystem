@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoginRegister.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230913152025_CreateNewPropertyInUserClass")]
-    partial class CreateNewPropertyInUserClass
+    [Migration("20230916143234_CreateDatabase")]
+    partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,10 @@ namespace LoginRegister.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<string>("ProfilePhotoFileName")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Role")
                         .IsRequired()
