@@ -164,6 +164,7 @@ namespace LoginRegister.Controllers
             Guid userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             User user = _dc.Users.SingleOrDefault(x => x.Id == userId);
             ViewData["FullName"] = user.FullName;
+            ViewData["ProfilePhoto"] = user.ProfilePhotoFileName;
         }
 
         private string DoMD5HashedString(string s)
@@ -172,6 +173,30 @@ namespace LoginRegister.Controllers
             string salted = s + md5Salt;
             string hashed = salted.MD5();
             return hashed;
+        }
+
+        [HttpPost]
+        public IActionResult ProfileChangeProfilePhoto([Required] IFormFile file)
+        {
+            if (ModelState.IsValid)
+            {
+                Guid userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                User user = _dc.Users.SingleOrDefault(x => x.Id == userId);
+
+                var extension = Path.GetExtension(file.FileName);
+                string fileName = $"p_{userId}.{extension}";
+
+                Stream stream = new FileStream($"wwwroot/uploads/{fileName}", FileMode.OpenOrCreate);
+                file.CopyTo(stream);
+                stream.Close();
+                stream.Dispose();
+
+                user.ProfilePhotoFileName = fileName;
+                _dc.SaveChanges();
+                ViewData["Result"] = "ProfilePhotoChanged";
+            }
+            ProfileInfoLoader();
+            return View("Profile");
         }
     }
 }
