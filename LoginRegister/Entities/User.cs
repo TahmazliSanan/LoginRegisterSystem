@@ -21,6 +21,9 @@ namespace LoginRegister.Entities
 
         public bool Locked { get; set; } = false;
 
+        [StringLength(255)]
+        public string? ProfilePhotoFileName { get; set; } = "no-profile-photo.jpg";
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Required]
