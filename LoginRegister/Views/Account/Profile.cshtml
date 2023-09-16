@@ -9,11 +9,31 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-4">
+    <div class="col-6 offset-6 my-3">
         <div class="mb-4">
             <div asp-validation-summary="All" class="text-danger small"></div>
         </div>
+    </div>
 
+    <div class="col-6">
+        <form method="post" asp-action="ProfileChangeProfilePhoto" enctype="multipart/form-data">
+            <div class="text-center mb-3">
+                <img src="~/uploads/@ViewData["ProfilePhoto"]" class="rounded-circle" width="150" />
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label small">Profile Photo</label>
+                <input type="file" name="file" class="form-control" />
+                <div class="text-center mt-3">
+                    <button class="btn btn-secondary" type="submit">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-6">
         <form method="post" asp-action="ProfileChangeFullName">
             <div class="form-group">
                 <label class="form-label small">Full Name</label>
@@ -56,6 +76,13 @@
     {
         <script>
             toastr["success"]("Your password was changed successfully!", "Operation")
+        </script>
+    }
+
+    @if (ViewData["Result"] != null && ViewData["Result"] is "ProfilePhotoChanged")
+    {
+        <script>
+            toastr["success"]("Your profile photo was changed successfully!", "Operation")
         </script>
     }
 }
